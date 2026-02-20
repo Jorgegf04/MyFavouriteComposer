@@ -85,7 +85,14 @@ public class SecurityConfig {
                 http
                                 .securityMatcher("/**")
                                 .authorizeHttpRequests(auth -> auth
-                                                .requestMatchers("/", "/search/**").permitAll()
+                                                .requestMatchers(
+                                                                "/",
+                                                                "/search/**",
+                                                                "/swagger-ui/**",
+                                                                "/swagger-ui.html",
+                                                                "/v3/api-docs/**",
+                                                                "/swagger")
+                                                .permitAll()
                                                 .requestMatchers("/new/**").permitAll()
                                                 .requestMatchers("/login").permitAll()
                                                 .requestMatchers("/show/composer", "/show/music-piece",
