@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Composers</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-light">
+    <div th:replace="fragments/header :: header"></div>
+
+    <main class="container my-5">
+      <h2 class="mb-4 fw-semibold">Composers</h2>
+
+      <!-- Page size selector -->
+      <form method="get" th:action="@{/composer-pagination-list}" class="mb-3">
+        <label class="me-2">Composers per page:</label>
+        <select name="size" onchange="this.form.submit()">
+          <option th:value="5" th:selected="${pageSize == 5}">5</option>
+          <option th:value="10" th:selected="${pageSize == 10}">10</option>
+          <option th:value="20" th:selected="${pageSize == 20}">20</option>
+        </select>
+      </form>
+
+      <!-- Table -->
+      <table class="table table-hover shadow-sm bg-white">
+        <thead class="table-light">
+          <tr>
+            <th>Name</th>
+            <th>Nationality</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="c : ${composerList}">
+            <td th:text="${c.name}"></td>
+            <td th:text="${c.nationality}"></td>
+            <td class="text-end">
+              <a
+                th:href="@{/edit/composer/{id}(id=${c.id})}"
+                class="btn btn-sm btn-outline-warning"
+              >
+                <i class="bi bi-pencil"></i>
+              </a>
+              <a
+                th:href="@{/delete/composer/{id}(id=${c.id})}"
+                class="btn btn-sm btn-outline-danger"
+                onclick="return confirm('Delete composer?')"
+              >
+                <i class="bi bi-trash"></i>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Pagination -->
+      <nav>
+        <ul class="pagination">
+          <li class="page-item">
+            <a
+              class="page-link"
+              th:href="@{/composer-pagination-list(pag=0, size=${pageSize})}"
+            >
+              First
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a
+              class="page-link"
+              th:href="@{/composer-pagination-list(pag=${pagAnt}, size=${pageSize})}"
+            >
+              Previous
+            </a>
+          </li>
+
+          <!-- Page numbers -->
+          <li class="page-item" th:each="i : ${#numbers.sequence(0, pagFinal)}">
+            <a
+              class="page-link"
+              th:href="@{/composer-pagination-list(pag=${i}, size=${pageSize})}"
+              th:text="${i + 1}"
+            >
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a
+              class="page-link"
+              th:href="@{/composer-pagination-list(pag=${pagSig}, size=${pageSize})}"
+            >
+              Next
+            </a>
+          </li>
+
+          <li class="page-item">
+            <a
+              class="page-link"
+              th:href="@{/composer-pagination-list(pag=${pagFinal}, size=${pageSize})}"
+            >
+              Last
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </main>
+
+    <div th:replace="fragments/footer :: footer"></div>
+  </body>
+</html>

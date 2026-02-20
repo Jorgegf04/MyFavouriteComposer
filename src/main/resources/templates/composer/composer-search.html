@@ -1,0 +1,112 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <!-- Head fragment -->
+    <title>Search Composers by Name</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <!-- Header -->
+    <div th:replace="~{fragments/header :: header}"></div>
+
+    <!-- Page Content -->
+    <div class="container my-5">
+      <!-- Title -->
+      <div class="text-center mb-4">
+        <h1 class="fw-semibold">
+          <i class="bi bi-music-note-beamed me-2 text-primary"></i>
+          Search composers by name
+        </h1>
+        <p class="text-muted mb-0">
+          Find composers using part or all of their name.
+        </p>
+      </div>
+
+      <!-- Search Form -->
+      <div class="row justify-content-center mb-5">
+        <div class="col-md-6 col-lg-5">
+          <div class="card shadow-sm border-0">
+            <div class="card-body p-4">
+              <form th:action="@{/search/composer/result}" method="post">
+                <div class="mb-3">
+                  <label for="name" class="form-label fw-semibold">
+                    Composer name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    class="form-control"
+                    placeholder="Beethoven, Mozart, Bach..."
+                    th:value="${name}"
+                  />
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-search me-2"></i>
+                    Search
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="mt-4">
+        <h2 class="h4 mb-3">
+          <i class="bi bi-list-ul me-2"></i>
+          Results
+        </h2>
+
+        <!-- No results -->
+        <div
+          th:if="${composers != null and composers.isEmpty()}"
+          class="alert alert-warning d-flex align-items-center"
+          role="alert"
+        >
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          No composers found.
+        </div>
+
+        <!-- Results table -->
+        <div
+          th:if="${composers != null and !composers.isEmpty()}"
+          class="table-responsive"
+        >
+          <table class="table table-striped table-hover align-middle">
+            <thead class="table-primary">
+              <tr>
+                <th>Name</th>
+                <th>Nationality</th>
+                <th>Birth</th>
+                <th>Death</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="composer : ${composers}">
+                <td th:text="${composer.name}"></td>
+                <td th:text="${composer.nationality}"></td>
+                <td th:text="${composer.birth}"></td>
+                <td th:text="${composer.death}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+  </body>
+</html>

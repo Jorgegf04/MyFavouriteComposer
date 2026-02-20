@@ -1,0 +1,80 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Musical pieces</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-light">
+    <!-- Header -->
+    <div th:replace="fragments/header :: header"></div>
+
+    <main class="container my-5">
+      <!-- Title -->
+      <h2 class="mb-4 fw-semibold">
+        <i class="bi bi-music-note-list me-2 text-primary"></i>
+        Musical pieces
+      </h2>
+
+      <!-- Table card -->
+      <div class="card shadow-sm border-0">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0 bg-white">
+            <thead class="table-light">
+              <tr>
+                <th>Title</th>
+                <th>Composer</th>
+                <th>Instrumentation</th>
+                <th>Premiere</th>
+                <th class="text-end">Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr th:each="p : ${musicalPieces}">
+                <td th:text="${p.title}"></td>
+
+                <td th:text="${p.composerName}"></td>
+
+                <td th:text="${p.instrumentation}"></td>
+
+                <td th:text="${p.premiere}"></td>
+
+                <td class="text-end">
+                  <a
+                    th:href="@{/edit/music-piece/{id}(id=${p.id})}"
+                    class="btn btn-sm btn-outline-warning me-1"
+                    title="Edit"
+                    sec:authorize="hasRole('ADMIN')"
+                  >
+                    <i class="bi bi-pencil"></i>
+                  </a>
+
+                  <a
+                    th:href="@{/delete/music-piece/{id}(id=${p.id})}"
+                    class="btn btn-sm btn-outline-danger"
+                    onclick="return confirm('Delete musical piece?');"
+                    title="Delete"
+                    sec:authorize="hasRole('ADMIN')"
+                  >
+                    <i class="bi bi-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <div th:replace="fragments/footer :: footer"></div>
+  </body>
+</html>
